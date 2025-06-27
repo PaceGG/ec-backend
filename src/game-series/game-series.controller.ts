@@ -27,6 +27,11 @@ export class GameSeriesController {
     return this.service.createWithGames(data);
   }
 
+  @Get()
+  getAllSeries(): Promise<GameSeries[]> {
+    return this.service.getAllSeries();
+  }
+
   @Get('basic')
   @ApiOperation({
     summary: 'Получение списка серий без вложенных игр',

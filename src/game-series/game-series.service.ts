@@ -39,6 +39,18 @@ export class GameSeriesService {
     return Status.none;
   }
 
+  getAllSeries() {
+    return this.prisma.gameSeries.findMany({
+      include: {
+        games: {
+          include: {
+            stats: true,
+          },
+        },
+      },
+    });
+  }
+
   getAllSeriesBasic() {
     return this.prisma.gameSeries.findMany({
       select: {
