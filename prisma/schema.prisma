@@ -22,17 +22,17 @@ enum Status {
 }
 
 model Game {
-  id           BigInt     @id @default(autoincrement())
+  id           BigInt      @id @default(autoincrement())
   name         String
-  status       Status     @default(none)
-  gameSeriesId BigInt
-  gameSeries   GameSeries @relation(fields: [gameSeriesId], references: [id])
+  status       Status      @default(none)
+  gameSeriesId BigInt?
+  gameSeries   GameSeries? @relation(fields: [gameSeriesId], references: [id])
   themeId      BigInt?
-  theme        Theme?     @relation(fields: [themeId], references: [id])
-  stats        GameStats? @relation(fields: [statsId], references: [id])
-  statsId      BigInt?    @unique
+  theme        Theme?      @relation(fields: [themeId], references: [id])
+  stats        GameStats?  @relation(fields: [statsId], references: [id])
+  statsId      BigInt?     @unique
   showcaseId   BigInt?
-  showcase     Showcase?  @relation(fields: [showcaseId], references: [id])
+  showcase     Showcase?   @relation(fields: [showcaseId], references: [id])
 
   @@index([gameSeriesId])
   @@index([themeId])

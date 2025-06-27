@@ -28,4 +28,12 @@ export class GameService {
       },
     });
   }
+
+  create(data: { name: string }): Promise<Game> {
+    return this.prisma.game.create({
+      data: {
+        name: data.name,
+      },
+    });
+  }
 }
