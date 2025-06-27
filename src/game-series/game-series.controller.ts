@@ -29,7 +29,7 @@ export class GameSeriesController {
 
   @Get()
   getAllSeries(): Promise<GameSeries[]> {
-    return this.service.getAllSeries();
+    return this.service.getAllSeriesWithStatus();
   }
 
   @Get('basic')

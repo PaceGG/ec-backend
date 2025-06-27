@@ -14,41 +14,37 @@ export class GameSeriesService {
     Status.bad,
   ];
 
-  async determineSeriesStatus(seriesId: number): Promise<Status> {
-    const games = await this.prisma.game.findMany({
-      where: {
-        gameSeriesId: seriesId,
-      },
-      select: {
-        status: true,
-      },
-    });
-
+  determineSeriesStatusFromGames(games: { status: Status }[]): Status {
     if (games.length === 0) {
       return Status.none;
     }
-
     const statuses = new Set(games.map((g) => g.status));
-
     for (const status of this.statusPriority) {
       if (statuses.has(status)) {
         return status;
       }
     }
-
     return Status.none;
   }
 
-  getAllSeries() {
-    return this.prisma.gameSeries.findMany({
+  async getAllSeriesWithStatus() {
+    const seriesList = await this.prisma.gameSeries.findMany({
       include: {
         games: {
-          include: {
-            stats: true,
-          },
+          include: { stats: true },
         },
       },
     });
+
+    const results = seriesList.map((series) => {
+      const seriesStatus = this.determineSeriesStatusFromGames(series.games);
+      return {
+        ...series,
+        seriesStatus,
+      };
+    });
+
+    return results;
   }
 
   getAllSeriesBasic() {
