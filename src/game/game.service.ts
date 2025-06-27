@@ -29,7 +29,7 @@ export class GameService {
     });
   }
 
-  getGamesBySeriesId(id: bigint) {
+  getGamesBySeriesId(id: number) {
     return this.prisma.game.findMany({
       where: {
         gameSeriesId: id,
@@ -41,7 +41,7 @@ export class GameService {
     });
   }
 
-  getGameById(id: bigint): Promise<Game | null> {
+  getGameById(id: number): Promise<Game | null> {
     return this.prisma.game.findUnique({
       where: { id },
       include: {

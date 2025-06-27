@@ -4,7 +4,7 @@ import { Game } from '@prisma/client';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GameResponseDto } from './dto/create-game-response.dto';
 import { CreateGameDto } from './dto/create-game.dto';
-import { GameDto } from './dto/game.dto';
+import { BasicGameDto } from './dto/game.dto';
 
 @ApiTags('Game')
 @Controller('game')
@@ -32,7 +32,7 @@ export class GameController {
   @ApiResponse({
     status: 200,
     description: 'Успешное получение игр без серии',
-    type: [GameDto],
+    type: [BasicGameDto],
   })
   getGamesWithoutSeries(): Promise<Game[]> {
     return this.service.getGamesWithoutSeries();
@@ -45,10 +45,10 @@ export class GameController {
   @ApiResponse({
     status: 200,
     description: 'Успешное получение игр без серии',
-    type: [GameDto],
+    type: [BasicGameDto],
   })
   getGamesBySeriesId(@Param('seriesId') seriesId: string) {
-    const id = BigInt(seriesId);
+    const id = Number(seriesId);
     return this.service.getGamesBySeriesId(id);
   }
 }

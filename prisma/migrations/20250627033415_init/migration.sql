@@ -1,31 +1,22 @@
-/*
-  Warnings:
-
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "Status" AS ENUM ('none', 'inProgress', 'complete', 'bad', 'wait');
 
--- DropTable
-DROP TABLE "User";
-
 -- CreateTable
 CREATE TABLE "Game" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "status" "Status" NOT NULL DEFAULT 'none',
-    "gameSeriesId" BIGINT NOT NULL,
-    "themeId" BIGINT,
-    "statsId" BIGINT,
-    "showcaseId" BIGINT,
+    "gameSeriesId" INTEGER,
+    "themeId" INTEGER,
+    "statsId" INTEGER,
+    "showcaseId" INTEGER,
 
     CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "GameStats" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "duration" INTEGER NOT NULL,
     "episodesCount" INTEGER NOT NULL,
 
@@ -34,7 +25,7 @@ CREATE TABLE "GameStats" (
 
 -- CreateTable
 CREATE TABLE "GameSeries" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
 
     CONSTRAINT "GameSeries_pkey" PRIMARY KEY ("id")
@@ -42,7 +33,7 @@ CREATE TABLE "GameSeries" (
 
 -- CreateTable
 CREATE TABLE "Theme" (
-    "id" BIGSERIAL NOT NULL,
+    "id" SERIAL NOT NULL,
     "coverart" TEXT NOT NULL,
     "color" TEXT NOT NULL,
 
@@ -51,7 +42,7 @@ CREATE TABLE "Theme" (
 
 -- CreateTable
 CREATE TABLE "Showcase" (
-    "id" BIGINT NOT NULL,
+    "id" INTEGER NOT NULL,
 
     CONSTRAINT "Showcase_pkey" PRIMARY KEY ("id")
 );
@@ -72,7 +63,7 @@ CREATE INDEX "Game_statsId_idx" ON "Game"("statsId");
 CREATE INDEX "Game_showcaseId_idx" ON "Game"("showcaseId");
 
 -- AddForeignKey
-ALTER TABLE "Game" ADD CONSTRAINT "Game_gameSeriesId_fkey" FOREIGN KEY ("gameSeriesId") REFERENCES "GameSeries"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Game" ADD CONSTRAINT "Game_gameSeriesId_fkey" FOREIGN KEY ("gameSeriesId") REFERENCES "GameSeries"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Game" ADD CONSTRAINT "Game_themeId_fkey" FOREIGN KEY ("themeId") REFERENCES "Theme"("id") ON DELETE SET NULL ON UPDATE CASCADE;

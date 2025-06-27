@@ -29,7 +29,7 @@ export class GameSeriesController {
 
   @Get('basic')
   @ApiOperation({
-    summary: 'Получение базовых данных серий игр',
+    summary: 'Получение списка серий без вложенных игр',
     description: 'Возвращает базовый список серий без вложенных игр',
   })
   @ApiResponse({

@@ -8,9 +8,9 @@ export class GameStatsDto {
   episodesCount!: number;
 }
 
-export class GameDto {
-  @ApiProperty({ example: '10', description: 'ID игры (BigInt в строке)' })
-  id!: string;
+export class BasicGameDto {
+  @ApiProperty({ example: 10, description: 'ID игры' })
+  id!: number;
 
   @ApiProperty({ example: 'Epic Quest', description: 'Название игры' })
   name!: string;
