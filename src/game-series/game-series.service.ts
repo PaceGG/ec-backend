@@ -12,15 +12,13 @@ export class GameSeriesService {
 
   createWithGames(data: {
     name: string;
-    games: { name: string }[];
+    gameNames: string[];
   }): Promise<GameSeries> {
     return this.prisma.gameSeries.create({
       data: {
         name: data.name,
         games: {
-          create: data.games.map((game) => ({
-            name: game.name,
-          })),
+          create: data.gameNames.map((name) => ({ name })),
         },
       },
       include: {

@@ -28,9 +28,9 @@ async function bootstrap() {
   // Подключаем Swagger UI по адресу /api
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000);
-  console.log(`Server started at http://localhost:3000`);
-  console.log(`Swagger UI available at http://localhost:3000/api`);
+  await app.listen(3003);
+  console.log(`Server started at http://localhost:3003`);
+  console.log(`Swagger UI available at http://localhost:3003/api`);
 }
 
 bootstrap();
