@@ -17,6 +17,30 @@ export class GameService {
     });
   }
 
+  getGamesWithoutSeries(): Promise<Game[]> {
+    return this.prisma.game.findMany({
+      where: {
+        gameSeriesId: null,
+      },
+      include: {
+        stats: true,
+      },
+      orderBy: { name: 'asc' },
+    });
+  }
+
+  getGamesBySeriesId(id: bigint) {
+    return this.prisma.game.findMany({
+      where: {
+        gameSeriesId: id,
+      },
+      include: {
+        stats: true,
+      },
+      orderBy: { name: 'asc' },
+    });
+  }
+
   getGameById(id: bigint): Promise<Game | null> {
     return this.prisma.game.findUnique({
       where: { id },

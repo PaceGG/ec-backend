@@ -6,8 +6,14 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class GameSeriesService {
   constructor(private prisma: PrismaService) {}
 
-  getAllGameSeries() {
-    return this.prisma.gameSeries.findMany();
+  getAllSeriesBasic() {
+    return this.prisma.gameSeries.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+      orderBy: { name: 'asc' },
+    });
   }
 
   createWithGames(data: {
