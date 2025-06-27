@@ -13,9 +13,57 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  name      String?
-  createdAt DateTime @default(now())
+enum Status {
+  none
+  inProgress
+  complete
+  bad
+  wait
+}
+
+model Game {
+  id           BigInt     @id @default(autoincrement())
+  name         String
+  status       Status     @default(none)
+  gameSeriesId BigInt
+  gameSeries   GameSeries @relation(fields: [gameSeriesId], references: [id])
+  themeId      BigInt?
+  theme        Theme?     @relation(fields: [themeId], references: [id])
+  stats        GameStats? @relation(fields: [statsId], references: [id])
+  statsId      BigInt?    @unique
+  showcaseId   BigInt?
+  showcase     Showcase?  @relation(fields: [showcaseId], references: [id])
+
+  @@index([gameSeriesId])
+  @@index([themeId])
+  @@index([statsId])
+  @@index([showcaseId])
+}
+
+model GameStats {
+  id            BigInt @id @default(autoincrement())
+  duration      Int
+  episodesCount Int
+
+  game Game?
+}
+
+model GameSeries {
+  id   BigInt @id @default(autoincrement())
+  name String
+
+  games Game[]
+}
+
+model Theme {
+  id       BigInt @id @default(autoincrement())
+  coverart String
+  color    String
+
+  games Game[]
+}
+
+model Showcase {
+  id    BigInt @id
+  games Game[]
 }
