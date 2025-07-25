@@ -49,8 +49,9 @@ model GameStats {
 }
 
 model GameSeries {
-  id   Int    @id @default(autoincrement())
-  name String
+  id     Int    @id @default(autoincrement())
+  name   String
+  status Status @default(none)
 
   games Game[]
 }
