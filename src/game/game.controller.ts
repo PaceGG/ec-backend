@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { GameService } from './game.service';
-import { Game } from '@prisma/client';
+import { Game, GameSeries } from '@prisma/client';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GameResponseDto } from './dto/create-game-response.dto';
 import { CreateGameDto } from './dto/create-game.dto';
@@ -21,6 +21,21 @@ export class GameController {
   @ApiBody({ type: CreateGameDto })
   create(@Body() data: { name: string }): Promise<Game> {
     return this.service.create(data);
+  }
+
+  @Get('all')
+  @ApiOperation({
+    summary: 'Получить все игры (серии + одиночные)',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Успешное получение серий и игр',
+  })
+  async getAllSeriesAndSoloGames(): Promise<{
+    gameSeries: GameSeries[];
+    soloGames: Game[];
+  }> {
+    return this.service.getAllGamesWithSeries();
   }
 
   @Get('without-series')

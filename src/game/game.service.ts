@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Game } from '@prisma/client';
+import { Game, GameSeries } from '@prisma/client';
 
 @Injectable()
 export class GameService {
@@ -15,6 +15,28 @@ export class GameService {
         showcase: true,
       },
     });
+  }
+
+  async getAllGamesWithSeries(): Promise<{
+    gameSeries: GameSeries[];
+    soloGames: Game[];
+  }> {
+    const gameSeries = await this.prisma.gameSeries.findMany({
+      include: {
+        games: true,
+      },
+    });
+
+    const soloGames = await this.prisma.game.findMany({
+      where: {
+        gameSeriesId: null,
+      },
+    });
+
+    return {
+      gameSeries,
+      soloGames,
+    };
   }
 
   getGamesWithoutSeries(): Promise<Game[]> {

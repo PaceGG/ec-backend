@@ -6,6 +6,8 @@ import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.enableCors();
+  const port = 4001;
 
   app.setGlobalPrefix('api');
 
@@ -28,9 +30,9 @@ async function bootstrap() {
   // Подключаем Swagger UI по адресу /api
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(3003);
-  console.log(`Server started at http://localhost:3003`);
-  console.log(`Swagger UI available at http://localhost:3003/api`);
+  await app.listen(port);
+  console.log(`Server started at http://localhost:${4001}`);
+  console.log(`Swagger UI available at http://localhost:${4001}/api`);
 }
 
 bootstrap();
