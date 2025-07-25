@@ -25,15 +25,15 @@ export class GameController {
 
   @Get('all')
   @ApiOperation({
-    summary: 'Получить все игры (серии + одиночные)',
+    summary: 'Получить все серии и игры)',
   })
   @ApiResponse({
     status: 200,
     description: 'Успешное получение серий и игр',
   })
-  async getAllSeriesAndSoloGames(): Promise<{
+  async getAllSeriesAndGames(): Promise<{
     gameSeries: GameSeries[];
-    soloGames: Game[];
+    games: Game[];
   }> {
     return this.service.getAllGamesWithSeries();
   }

@@ -19,7 +19,7 @@ export class GameService {
 
   async getAllGamesWithSeries(): Promise<{
     gameSeries: GameSeries[];
-    soloGames: Game[];
+    games: Game[];
   }> {
     const gameSeries = await this.prisma.gameSeries.findMany({
       include: {
@@ -27,15 +27,11 @@ export class GameService {
       },
     });
 
-    const soloGames = await this.prisma.game.findMany({
-      where: {
-        gameSeriesId: null,
-      },
-    });
+    const games = await this.prisma.game.findMany();
 
     return {
       gameSeries,
-      soloGames,
+      games,
     };
   }
 
