@@ -1,10 +1,17 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { GameService } from './game.service';
 import { Game, GameSeries } from '@prisma/client';
-import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GameResponseDto } from './dto/create-game-response.dto';
 import { CreateGameDto } from './dto/create-game.dto';
-import { BasicGameDto } from './dto/game.dto';
+import { BasicGameDto, GameUpdateDto } from './dto/game.dto';
+import { GameDto } from 'src/game-series/dto/create-game-sereis-response.dto';
 
 @ApiTags('Game')
 @Controller('game')
@@ -65,5 +72,17 @@ export class GameController {
   getGamesBySeriesId(@Param('seriesId') seriesId: string) {
     const id = Number(seriesId);
     return this.service.getGamesBySeriesId(id);
+  }
+
+  @Patch(':id')
+  @ApiOperation({ summary: 'Обновить игру (без служебных полей)' })
+  @ApiParam({ name: 'id', example: 1, description: 'ID игры' })
+  @ApiResponse({
+    status: 200,
+    description: 'Игра успешно обновлена',
+    type: GameDto,
+  })
+  updateGame(@Param('id') id: string, @Body() dto: GameUpdateDto) {
+    return this.service.updateGame(Number(id), dto);
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Game, GameSeries } from '@prisma/client';
+import { Game, GameSeries, Prisma } from '@prisma/client';
+import { GameUpdateDto } from './dto/game.dto';
 
 @Injectable()
 export class GameService {
@@ -27,7 +28,11 @@ export class GameService {
       },
     });
 
-    const games = await this.prisma.game.findMany();
+    const games = await this.prisma.game.findMany({
+      include: {
+        stats: true,
+      },
+    });
 
     return {
       gameSeries,
@@ -76,6 +81,34 @@ export class GameService {
       data: {
         name: data.name,
       },
+    });
+  }
+
+  async updateGame(id: number, dto: GameUpdateDto) {
+    const data: Prisma.GameUpdateInput = {};
+
+    if (dto.name !== undefined) data.name = dto.name;
+    if (dto.status !== undefined) data.status = dto.status;
+
+    if (dto.stats) {
+      data.stats = {
+        upsert: {
+          update: {
+            duration: dto.stats.duration,
+            episodesCount: dto.stats.episodesCount,
+          },
+          create: {
+            duration: dto.stats.duration,
+            episodesCount: dto.stats.episodesCount,
+          },
+        },
+      };
+    }
+
+    return this.prisma.game.update({
+      where: { id },
+      data,
+      include: { stats: true },
     });
   }
 }
