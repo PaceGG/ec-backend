@@ -24,7 +24,9 @@ export class GameService {
   }> {
     const gameSeries = await this.prisma.gameSeries.findMany({
       include: {
-        games: true,
+        games: {
+          include: { stats: true },
+        },
       },
     });
 
